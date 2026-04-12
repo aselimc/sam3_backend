@@ -20,6 +20,7 @@ async def predict(request: Request, body: PredictRequest):
         queries=body.queries,
         output_dir=body.output_dir,
         confidence_threshold=body.confidence_threshold,
+        regularize=body.regularize,
     )
 
     return PredictResponse(image_path=body.image_path, results=results)
@@ -31,7 +32,17 @@ async def predict_upload(
     image: UploadFile = File(...),
     queries: list[str] = Form(...),
     confidence_threshold: float = Form(0.5),
+    regularize: list[bool] | None = Form(None),
 ):
+    if regularize is not None and len(regularize) != len(queries):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "regularize must have the same length as queries "
+                f"(got {len(regularize)} vs {len(queries)})"
+            ),
+        )
+
     contents = await image.read()
     try:
         pil_image = Image.open(io.BytesIO(contents)).convert("RGB")
@@ -43,6 +54,7 @@ async def predict_upload(
         image=pil_image,
         queries=queries,
         confidence_threshold=confidence_threshold,
+        regularize=regularize,
     )
 
     return PredictUploadResponse(filename=image.filename or "upload", results=results)
