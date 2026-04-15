@@ -1,13 +1,20 @@
 import base64
 import io
 import os
+import time
 
 import numpy as np
 import torch
+from loguru import logger
 from PIL import Image
 from sam3 import build_sam3_image_model
 from sam3.model.sam3_image_processor import Sam3Processor
 
+from app.metrics import (
+    gpu_mem_allocated_bytes,
+    gpu_mem_peak_bytes,
+    inference_seconds,
+)
 from app.regularization import regularize_mask
 
 
@@ -23,17 +30,40 @@ class SAM3Service:
         image: Image.Image,
         queries: list[str],
         confidence_threshold: float,
+        endpoint: str = "predict",
     ) -> list[tuple[torch.Tensor, torch.Tensor, torch.Tensor]]:
         """Run inference for each query, return list of (masks, boxes, scores)."""
         if confidence_threshold != self.processor.confidence_threshold:
             self.processor.set_confidence_threshold(confidence_threshold)
 
+        cuda = torch.cuda.is_available()
+        if cuda:
+            torch.cuda.reset_peak_memory_stats()
+
+        t0 = time.perf_counter()
         results = []
         with torch.autocast("cuda", dtype=torch.bfloat16):
             for query in queries:
                 state = self.processor.set_image(image)
                 state = self.processor.set_text_prompt(prompt=query, state=state)
                 results.append((state["masks"], state["boxes"], state["scores"]))
+        duration = time.perf_counter() - t0
+
+        inference_seconds.labels(endpoint=endpoint).observe(duration)
+        alloc = torch.cuda.memory_allocated() if cuda else 0
+        peak = torch.cuda.max_memory_allocated() if cuda else 0
+        gpu_mem_allocated_bytes.set(alloc)
+        gpu_mem_peak_bytes.set(peak)
+        logger.info(
+            "inference done endpoint={} n_queries={} image_size={} "
+            "duration_ms={:.1f} gpu_mem_alloc_mb={:.1f} gpu_mem_peak_mb={:.1f}",
+            endpoint,
+            len(queries),
+            image.size,
+            duration * 1000,
+            alloc / (1024 * 1024),
+            peak / (1024 * 1024),
+        )
         return results
 
     @staticmethod
@@ -86,7 +116,9 @@ class SAM3Service:
         image_name = os.path.splitext(os.path.basename(image_path))[0]
 
         flags = self._resolve_regularize_flags(regularize, len(queries))
-        raw_results = self._run_queries(image, queries, confidence_threshold)
+        raw_results = self._run_queries(
+            image, queries, confidence_threshold, endpoint="predict"
+        )
         results = []
         for query, (masks, boxes, scores), do_reg in zip(queries, raw_results, flags):
             objects = []
@@ -117,7 +149,9 @@ class SAM3Service:
         regularize: list[bool] | None = None,
     ) -> list[dict]:
         flags = self._resolve_regularize_flags(regularize, len(queries))
-        raw_results = self._run_queries(image, queries, confidence_threshold)
+        raw_results = self._run_queries(
+            image, queries, confidence_threshold, endpoint="predict_upload"
+        )
         results = []
         for query, (masks, boxes, scores), do_reg in zip(queries, raw_results, flags):
             objects = []

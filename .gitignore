@@ -13,5 +13,5 @@ data/
 # Environment secrets
 .env
 
-AutogluonModels
 
+.claude/
