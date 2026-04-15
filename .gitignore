@@ -13,5 +13,8 @@ data/
 # Environment secrets
 .env
 
-
+# IDE and editor files
 .claude/
+
+# Logs
+logs/
