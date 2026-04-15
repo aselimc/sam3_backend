@@ -36,7 +36,7 @@ jobs:
             python-multipart opencv-python-headless
 
       - name: Build Sphinx docs
-        run: uv run sphinx-build -b html docs/source docs/build/html
+        run: .venv/bin/sphinx-build -b html docs/source docs/build/html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
