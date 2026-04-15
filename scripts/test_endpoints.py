@@ -125,10 +125,10 @@ def test_predict(base: str) -> None:
 
 
 def test_predict_upload(base: str) -> None:
-    print("[3/4] POST /segment/from-upload (multipart)")
+    print("[3/4] POST /segment-from-upload (multipart)")
     t0 = time.perf_counter()
     status, body = _http_post_multipart(
-        f"{base}/segment/from-upload", IMAGES["bee"], QUERIES["bee"]
+        f"{base}/segment-from-upload", IMAGES["bee"], QUERIES["bee"]
     )
     dur = time.perf_counter() - t0
     assert status == 200, (status, body)
@@ -141,7 +141,7 @@ def test_predict_upload(base: str) -> None:
 
 
 def test_concurrency(base: str) -> None:
-    print("[4/4] 3x parallel /segment/from-upload (semaphore should serialize)")
+    print("[4/4] 3x parallel /segment-from-upload (semaphore should serialize)")
     jobs = [
         (IMAGES["bee"], QUERIES["bee"]),
         (IMAGES["scene1"], QUERIES["scene1"]),
@@ -150,7 +150,7 @@ def test_concurrency(base: str) -> None:
     t0 = time.perf_counter()
     with cf.ThreadPoolExecutor(max_workers=len(jobs)) as pool:
         futures = [
-            pool.submit(_http_post_multipart, f"{base}/segment/from-upload", img, q)
+            pool.submit(_http_post_multipart, f"{base}/segment-from-upload", img, q)
             for img, q in jobs
         ]
         results = [f.result() for f in futures]
