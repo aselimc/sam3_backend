@@ -1,4 +1,5 @@
-"""Orthogonal (rectilinear) polygon regularization for binary segmentation masks.
+"""Orthogonal (rectilinear) polygon regularization for binary segmentation masks. 
+Generally suggested for Remote Sensing applications.
 
 The goal is to take an irregular mask predicted by a segmentation model and
 produce a "cleaner" mask whose boundary is a rectilinear polygon aligned with
