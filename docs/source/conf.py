@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).parent / "_ext"))
 
 project = "sam3-backend"
 author = "sam3-backend contributors"
@@ -21,6 +22,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "myst_parser",
+    "sphinxcontrib.openapi",
+    "gen_openapi",
 ]
 
 templates_path = ["_templates"]

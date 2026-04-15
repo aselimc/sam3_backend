@@ -7,6 +7,7 @@ FastAPI backend exposing SAM3 segmentation and polygon regularization.
    :maxdepth: 2
    :caption: Contents:
 
+   endpoints
    api
 
 Indices and tables

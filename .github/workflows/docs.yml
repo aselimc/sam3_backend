@@ -32,8 +32,10 @@ jobs:
         run: |
           uv venv
           uv pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints myst-parser \
+            sphinxcontrib-openapi \
             fastapi pydantic pydantic-settings uvicorn pillow "numpy<2" psutil \
-            python-multipart opencv-python-headless
+            python-multipart opencv-python-headless loguru \
+            prometheus-fastapi-instrumentator
 
       - name: Build Sphinx docs
         run: .venv/bin/sphinx-build -b html docs/source docs/build/html
