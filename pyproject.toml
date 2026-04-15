@@ -32,3 +32,11 @@ torch = { index = "pytorch-cu130" }
 torchvision = { index = "pytorch-cu130" }
 torchaudio = { index = "pytorch-cu130" }
 sam3 = { path = "third_party/sam3", editable = true }
+
+[dependency-groups]
+docs = [
+    "myst-parser>=5.0.0",
+    "sphinx>=9.1.0",
+    "sphinx-autodoc-typehints>=3.10.1",
+    "sphinx-rtd-theme>=3.1.0",
+]

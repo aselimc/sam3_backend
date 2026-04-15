@@ -1,0 +1,41 @@
+# SAM3 Backend
+
+FastAPI service for text-prompted segmentation using SAM3.
+
+## Requirements
+
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/)
+- CUDA-capable GPU (recommended)
+
+## Install
+
+```bash
+uv sync
+```
+
+## Run
+
+```bash
+uv run python main.py
+```
+
+Server: http://localhost:8000
+
+## How model weights are loaded
+
+- Before first run, authenticate with Hugging Face:
+
+```bash
+hf auth login
+```
+
+- The app creates `SAM3Service`, which calls `build_sam3_image_model()`.
+- No local checkpoint is passed.
+- SAM3 then downloads weights from Hugging Face (`facebook/sam3`, file `sam3.pt`) using `hf_hub_download`.
+- Downloaded files are reused from the local Hugging Face cache on later runs.
+
+## API
+
+- `POST /predict`: image path input, saves masks to disk.
+- `POST /predict/upload`: image upload input, returns masks as base64.
