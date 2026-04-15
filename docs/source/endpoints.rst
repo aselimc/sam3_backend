@@ -7,11 +7,11 @@ build (see ``_ext/gen_openapi.py``).
 Usage examples
 --------------
 
-``POST /predict`` — path-based, masks saved to disk:
+``POST /segment-from-path`` — path-based, masks saved to disk:
 
 .. code-block:: bash
 
-   curl -X POST http://localhost:8000/predict \
+   curl -X POST http://localhost:8000/segment-from-path \
         -H "Content-Type: application/json" \
         -d '{
               "image_path": "/abs/path/to/image.jpg",
@@ -21,11 +21,11 @@ Usage examples
               "regularize": [false, true]
             }'
 
-``POST /predict/upload`` — multipart upload, masks returned as base64:
+``POST /segment-from-upload`` — multipart upload, masks returned as base64:
 
 .. code-block:: bash
 
-   curl -X POST http://localhost:8000/predict/upload \
+   curl -X POST http://localhost:8000/segment-from-upload \
         -F "image=@assets/bee.jpg" \
         -F "queries=bee" \
         -F "queries=flower" \

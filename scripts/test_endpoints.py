@@ -6,9 +6,9 @@ Usage:
 
 Tests:
     1. GET  /metrics              — Prometheus exposition
-    2. POST /predict              — path-based, writes masks to disk
-    3. POST /predict/upload       — multipart upload, returns base64 masks
-    4. Concurrency: fire 3 parallel /predict/upload and confirm no 5xx
+    2. POST /segment-from-path    — path-based, writes masks to disk
+    3. POST /segment-from-upload  — multipart upload, returns base64 masks
+    4. Concurrency: fire 3 parallel /segment-from-upload and confirm no 5xx
 """
 
 from __future__ import annotations
@@ -107,7 +107,7 @@ def test_metrics(base: str) -> None:
 
 
 def test_predict(base: str) -> None:
-    print("[2/4] POST /predict (path-based)")
+    print("[2/4] POST /segment-from-path (path-based)")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
         "image_path": str(IMAGES["scene1"]),
@@ -117,7 +117,7 @@ def test_predict(base: str) -> None:
         "regularize": [False, True],
     }
     t0 = time.perf_counter()
-    status, body = _http_post_json(f"{base}/predict", payload)
+    status, body = _http_post_json(f"{base}/segment-from-path", payload)
     dur = time.perf_counter() - t0
     assert status == 200, (status, body)
     n_objs = sum(len(r["objects"]) for r in body["results"])
@@ -125,10 +125,10 @@ def test_predict(base: str) -> None:
 
 
 def test_predict_upload(base: str) -> None:
-    print("[3/4] POST /predict/upload (multipart)")
+    print("[3/4] POST /segment/from-upload (multipart)")
     t0 = time.perf_counter()
     status, body = _http_post_multipart(
-        f"{base}/predict/upload", IMAGES["bee"], QUERIES["bee"]
+        f"{base}/segment/from-upload", IMAGES["bee"], QUERIES["bee"]
     )
     dur = time.perf_counter() - t0
     assert status == 200, (status, body)
@@ -141,7 +141,7 @@ def test_predict_upload(base: str) -> None:
 
 
 def test_concurrency(base: str) -> None:
-    print("[4/4] 3x parallel /predict/upload (semaphore should serialize)")
+    print("[4/4] 3x parallel /segment/from-upload (semaphore should serialize)")
     jobs = [
         (IMAGES["bee"], QUERIES["bee"]),
         (IMAGES["scene1"], QUERIES["scene1"]),
@@ -150,7 +150,7 @@ def test_concurrency(base: str) -> None:
     t0 = time.perf_counter()
     with cf.ThreadPoolExecutor(max_workers=len(jobs)) as pool:
         futures = [
-            pool.submit(_http_post_multipart, f"{base}/predict/upload", img, q)
+            pool.submit(_http_post_multipart, f"{base}/segment/from-upload", img, q)
             for img, q in jobs
         ]
         results = [f.result() for f in futures]

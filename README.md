@@ -39,8 +39,8 @@ hf auth login
 
 ## API
 
-- `POST /predict`: image path input, saves masks to disk.
-- `POST /predict/upload`: image upload input, returns masks as base64.
+- `POST /segment-from-path`: image path input, saves masks to disk.
+- `POST /segment-from-upload`: image upload input, returns masks as base64.
 
 ## Docs
 

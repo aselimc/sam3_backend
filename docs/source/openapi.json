@@ -6,10 +6,10 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/predict": {
+    "/segment-from-path": {
       "post": {
         "summary": "Predict",
-        "operationId": "predict_predict_post",
+        "operationId": "predict_segment_from_path_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -44,15 +44,15 @@
         }
       }
     },
-    "/predict/upload": {
+    "/segment-from-upload": {
       "post": {
         "summary": "Predict Upload",
-        "operationId": "predict_upload_predict_upload_post",
+        "operationId": "predict_upload_segment_from_upload_post",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_predict_upload_predict_upload_post"
+                "$ref": "#/components/schemas/Body_predict_upload_segment_from_upload_post"
               }
             }
           },
@@ -85,7 +85,7 @@
   },
   "components": {
     "schemas": {
-      "Body_predict_upload_predict_upload_post": {
+      "Body_predict_upload_segment_from_upload_post": {
         "properties": {
           "image": {
             "type": "string",
@@ -124,7 +124,7 @@
           "image",
           "queries"
         ],
-        "title": "Body_predict_upload_predict_upload_post"
+        "title": "Body_predict_upload_segment_from_upload_post"
       },
       "HTTPValidationError": {
         "properties": {

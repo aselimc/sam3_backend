@@ -11,7 +11,7 @@ from app.schemas import PredictRequest, PredictResponse, PredictUploadResponse
 router = APIRouter()
 
 
-@router.post("/predict", response_model=PredictResponse)
+@router.post("/segment-from-path", response_model=PredictResponse)
 async def predict(request: Request, body: PredictRequest):
     if not os.path.isfile(body.image_path):
         raise HTTPException(status_code=400, detail=f"Image not found: {body.image_path}")
@@ -35,7 +35,7 @@ async def predict(request: Request, body: PredictRequest):
     return PredictResponse(image_path=body.image_path, results=results)
 
 
-@router.post("/predict/upload", response_model=PredictUploadResponse)
+@router.post("/segment-from-upload", response_model=PredictUploadResponse)
 async def predict_upload(
     request: Request,
     image: UploadFile = File(...),
