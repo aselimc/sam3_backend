@@ -2,6 +2,8 @@
 
 FastAPI service for text-prompted segmentation using SAM3.
 
+📚 **Documentation:** https://aselimc.github.io/sam3_backend/
+
 ## Requirements
 
 - Python 3.12+
@@ -39,3 +41,15 @@ hf auth login
 
 - `POST /predict`: image path input, saves masks to disk.
 - `POST /predict/upload`: image upload input, returns masks as base64.
+
+## Docs
+
+API reference is auto-generated with Sphinx and published to GitHub Pages on every push to `master` via `.github/workflows/docs.yml`.
+
+Build locally:
+
+```bash
+uv run --group docs sphinx-build -b html docs/source docs/build/html
+```
+
+Then open `docs/build/html/index.html`.
