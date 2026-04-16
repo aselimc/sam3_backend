@@ -11,6 +11,7 @@ from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.config import settings
+from app.job_router import router as job_router
 from app.router import router
 from app.sam3_service import SAM3Service
 
@@ -83,6 +84,7 @@ async def log_requests(request: Request, call_next) -> Response:
 
 
 app.include_router(router)
+app.include_router(job_router)
 
 if settings.enable_metrics:
     Instrumentator().instrument(app).expose(app, endpoint="/metrics")
