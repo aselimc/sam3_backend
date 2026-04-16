@@ -1,5 +1,10 @@
 # SAM3 Backend
 
+[![CI](https://github.com/aselimc/sam3_backend/actions/workflows/ci.yml/badge.svg)](https://github.com/aselimc/sam3_backend/actions/workflows/ci.yml)
+[![Docs](https://github.com/aselimc/sam3_backend/actions/workflows/docs.yml/badge.svg)](https://github.com/aselimc/sam3_backend/actions/workflows/docs.yml)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/github/license/aselimc/sam3_backend)](https://github.com/aselimc/sam3_backend/blob/master/LICENSE)
+
 FastAPI service for text-prompted segmentation using SAM3.
 
 📚 **Documentation:** https://aselimc.github.io/sam3_backend/
