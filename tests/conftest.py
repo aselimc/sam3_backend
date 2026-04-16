@@ -1,14 +1,31 @@
 """Shared fixtures for the SAM3 backend test suite.
 
-The SAM3 model is heavy and requires a GPU, so we mock the service layer
-for API-level tests.
+The SAM3 model is heavy and requires a GPU, so we mock the heavy
+dependencies (torch, sam3) at the module level before importing the app.
 """
 
 import asyncio
+import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
 from httpx import ASGITransport, AsyncClient
+
+
+def _ensure_mock_modules():
+    """Insert mock modules for torch/sam3 so imports don't fail in CI."""
+    for mod_name in (
+        "torch",
+        "torch.cuda",
+        "sam3",
+        "sam3.model",
+        "sam3.model.sam3_image_processor",
+    ):
+        if mod_name not in sys.modules:
+            sys.modules[mod_name] = MagicMock()
+
+
+_ensure_mock_modules()
 
 
 @pytest.fixture()
@@ -21,7 +38,11 @@ def mock_sam3_service():
             {
                 "query": q,
                 "objects": [
-                    {"mask_path": f"{output_dir}/mask_{i}.png", "box": [0, 0, 100, 100], "score": 0.95}
+                    {
+                        "mask_path": f"{output_dir}/mask_{i}.png",
+                        "box": [0, 0, 100, 100],
+                        "score": 0.95,
+                    }
                 ],
             }
             for i, q in enumerate(queries)
