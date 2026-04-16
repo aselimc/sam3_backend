@@ -1,11 +1,12 @@
 import argparse
 import asyncio
 import sys
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator
 
@@ -58,6 +59,29 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="SAM3.1 Backend", lifespan=lifespan)
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next) -> Response:
+    start = time.perf_counter()
+    logger.info(
+        "request started method={} path={} client={}",
+        request.method,
+        request.url.path,
+        request.client.host if request.client else "unknown",
+    )
+    response: Response = await call_next(request)
+    duration_ms = (time.perf_counter() - start) * 1000
+    logger.info(
+        "request finished method={} path={} status={} duration_ms={:.1f}",
+        request.method,
+        request.url.path,
+        response.status_code,
+        duration_ms,
+    )
+    return response
+
+
 app.include_router(router)
 
 if settings.enable_metrics:
