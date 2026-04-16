@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/aselimc/sam3_backend/actions/workflows/ci.yml/badge.svg)](https://github.com/aselimc/sam3_backend/actions/workflows/ci.yml)
 [![Docs](https://github.com/aselimc/sam3_backend/actions/workflows/docs.yml/badge.svg)](https://github.com/aselimc/sam3_backend/actions/workflows/docs.yml)
+[![codecov](https://codecov.io/gh/aselimc/sam3_backend/branch/master/graph/badge.svg)](https://codecov.io/gh/aselimc/sam3_backend)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/github/license/aselimc/sam3_backend)](https://github.com/aselimc/sam3_backend/blob/master/LICENSE)
 
@@ -41,6 +42,18 @@ hf auth login
 - No local checkpoint is passed.
 - SAM3 then downloads weights from Hugging Face (`facebook/sam3`, file `sam3.pt`) using `hf_hub_download`.
 - Downloaded files are reused from the local Hugging Face cache on later runs.
+
+## Test
+
+```bash
+uv run pytest tests/ -v
+```
+
+With coverage report:
+
+```bash
+uv run pytest tests/ -v --cov --cov-report=term
+```
 
 ## API
 

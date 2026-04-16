@@ -16,5 +16,10 @@ data/
 # IDE and editor files
 .claude/
 
+# Coverage
+coverage.xml
+htmlcov/
+.coverage
+
 # Logs
 logs/

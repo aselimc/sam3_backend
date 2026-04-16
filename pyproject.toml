@@ -41,6 +41,7 @@ dev = [
     "ruff>=0.11.0",
     "pytest>=8.0",
     "pytest-asyncio>=0.25.0",
+    "pytest-cov>=6.0",
     "httpx>=0.28.0",
 ]
 docs = [
@@ -61,3 +62,12 @@ select = ["E", "F", "I", "W", "UP"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["app", "main"]
+omit = ["tests/*", "third_party/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+fail_under = 50
