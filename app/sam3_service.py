@@ -21,9 +21,7 @@ from app.regularization import regularize_mask
 class SAM3Service:
     def __init__(self, confidence_threshold: float = 0.5):
         self.model = build_sam3_image_model()
-        self.processor = Sam3Processor(
-            self.model, confidence_threshold=confidence_threshold
-        )
+        self.processor = Sam3Processor(self.model, confidence_threshold=confidence_threshold)
 
     def _run_queries(
         self,
@@ -67,9 +65,7 @@ class SAM3Service:
         return results
 
     @staticmethod
-    def _resolve_regularize_flags(
-        regularize: list[bool] | None, n_queries: int
-    ) -> list[bool]:
+    def _resolve_regularize_flags(regularize: list[bool] | None, n_queries: int) -> list[bool]:
         if regularize is None:
             return [False] * n_queries
         if len(regularize) != n_queries:
@@ -116,9 +112,7 @@ class SAM3Service:
         image_name = os.path.splitext(os.path.basename(image_path))[0]
 
         flags = self._resolve_regularize_flags(regularize, len(queries))
-        raw_results = self._run_queries(
-            image, queries, confidence_threshold, endpoint="predict"
-        )
+        raw_results = self._run_queries(image, queries, confidence_threshold, endpoint="predict")
         results = []
         for query, (masks, boxes, scores), do_reg in zip(queries, raw_results, flags):
             objects = []
@@ -133,11 +127,13 @@ class SAM3Service:
                 mask_path = os.path.join(output_dir, mask_filename)
                 mask_img.save(mask_path)
 
-                objects.append({
-                    "mask_path": mask_path,
-                    "box": box,
-                    "score": scores[i].item(),
-                })
+                objects.append(
+                    {
+                        "mask_path": mask_path,
+                        "box": box,
+                        "score": scores[i].item(),
+                    }
+                )
             results.append({"query": query, "objects": objects})
         return results
 
@@ -165,10 +161,12 @@ class SAM3Service:
                 mask_img.save(buf, format="PNG")
                 mask_b64 = base64.b64encode(buf.getvalue()).decode("ascii")
 
-                objects.append({
-                    "mask_b64": mask_b64,
-                    "box": box,
-                    "score": scores[i].item(),
-                })
+                objects.append(
+                    {
+                        "mask_b64": mask_b64,
+                        "box": box,
+                        "score": scores[i].item(),
+                    }
+                )
             results.append({"query": query, "objects": objects})
         return results

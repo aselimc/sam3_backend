@@ -1,7 +1,6 @@
 """Tests for API endpoints."""
 
 import io
-from unittest.mock import patch
 
 import pytest
 from PIL import Image

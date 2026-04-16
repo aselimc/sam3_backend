@@ -19,10 +19,9 @@ import concurrent.futures as cf
 import json
 import sys
 import time
-from pathlib import Path
-
-import urllib.request
 import urllib.error
+import urllib.request
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
@@ -57,9 +56,7 @@ def _http_post_json(url: str, payload: dict) -> tuple[int, dict]:
         return e.code, json.loads(e.read() or b"{}")
 
 
-def _http_post_multipart(
-    url: str, image_path: Path, queries: list[str]
-) -> tuple[int, dict]:
+def _http_post_multipart(url: str, image_path: Path, queries: list[str]) -> tuple[int, dict]:
     boundary = "----sam3test" + str(int(time.time() * 1000))
     lines: list[bytes] = []
     for q in queries:
@@ -103,7 +100,7 @@ def test_metrics(base: str) -> None:
     assert status == 200, status
     text = body.decode(errors="replace")
     assert "sam3_inference_seconds" in text or "http_request" in text
-    print("     ok (Prometheus text, %d bytes)" % len(body))
+    print(f"     ok (Prometheus text, {len(body)} bytes)")
 
 
 def test_predict(base: str) -> None:

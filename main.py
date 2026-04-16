@@ -15,7 +15,6 @@ from app.job_router import router as job_router
 from app.router import router
 from app.sam3_service import SAM3Service
 
-
 DEFAULT_LOG_PATH = Path("logs") / "sam3_backend.log"
 
 

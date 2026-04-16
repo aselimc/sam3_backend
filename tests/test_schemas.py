@@ -1,6 +1,7 @@
 """Tests for request/response schema validation."""
 
 import pytest
+
 from app.schemas import PredictRequest
 
 

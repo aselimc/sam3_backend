@@ -33,7 +33,9 @@ def mock_sam3_service():
     """Return a MagicMock that behaves like SAM3Service."""
     service = MagicMock()
 
-    def _fake_predict(*, image_path, queries, output_dir, confidence_threshold=0.5, regularize=None):
+    def _fake_predict(
+        *, image_path, queries, output_dir, confidence_threshold=0.5, regularize=None
+    ):
         return [
             {
                 "query": q,
@@ -52,9 +54,7 @@ def mock_sam3_service():
         return [
             {
                 "query": q,
-                "objects": [
-                    {"mask_b64": "iVBORw0KGgo=", "box": [0, 0, 100, 100], "score": 0.95}
-                ],
+                "objects": [{"mask_b64": "iVBORw0KGgo=", "box": [0, 0, 100, 100], "score": 0.95}],
             }
             for q in queries
         ]

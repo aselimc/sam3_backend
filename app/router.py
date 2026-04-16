@@ -20,9 +20,7 @@ async def predict(request: Request, body: PredictRequest):
     semaphore = request.app.state.inference_semaphore
 
     async with semaphore:
-        logger.info(
-            "predict start path={} n_queries={}", body.image_path, len(body.queries)
-        )
+        logger.info("predict start path={} n_queries={}", body.image_path, len(body.queries))
         results = await run_in_threadpool(
             service.predict,
             image_path=body.image_path,

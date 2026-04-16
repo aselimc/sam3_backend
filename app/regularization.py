@@ -1,4 +1,4 @@
-"""Orthogonal (rectilinear) polygon regularization for binary segmentation masks. 
+"""Orthogonal (rectilinear) polygon regularization for binary segmentation masks.
 Generally suggested for Remote Sensing applications.
 
 The goal is to take an irregular mask predicted by a segmentation model and
@@ -97,9 +97,9 @@ def _regularize_contour(contour: np.ndarray) -> np.ndarray | None:
 
     perimeter = cv2.arcLength(rot_pts.reshape(-1, 1, 2).astype(np.float32), True)
     eps = max(_SIMPLIFY_EPS_MIN, _SIMPLIFY_EPS_FRAC * perimeter)
-    simplified = cv2.approxPolyDP(
-        rot_pts.reshape(-1, 1, 2).astype(np.float32), eps, True
-    ).reshape(-1, 2)
+    simplified = cv2.approxPolyDP(rot_pts.reshape(-1, 1, 2).astype(np.float32), eps, True).reshape(
+        -1, 2
+    )
 
     rectilinear = _rectilinearize(simplified)
     if rectilinear is None:
