@@ -14,7 +14,7 @@ FastAPI service for text-prompted segmentation using SAM3.
 
 - Python 3.12+
 - [uv](https://docs.astral.sh/uv/)
-- CUDA-capable GPU (recommended)
+- CUDA-capable GPU
 
 ## Install
 
