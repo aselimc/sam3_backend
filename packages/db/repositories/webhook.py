@@ -86,9 +86,7 @@ class WebhookRepo:
             d.next_retry_at = None  # dead-lettered
             await self._s.flush()
             return
-        delay = self.BACKOFF_SCHEDULE_S[
-            min(attempt - 1, len(self.BACKOFF_SCHEDULE_S) - 1)
-        ]
+        delay = self.BACKOFF_SCHEDULE_S[min(attempt - 1, len(self.BACKOFF_SCHEDULE_S) - 1)]
         d.attempt = attempt
         d.status_code = status_code
         d.response_body = response_body

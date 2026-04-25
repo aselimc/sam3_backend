@@ -92,6 +92,7 @@ class Internal(AppError):
 # Worker-internal error taxonomy (07/05). Not surfaced as HTTP but flow into
 # JobRecord.error_code via fmt_error in the runner.
 
+
 class TransientError(AppError):
     """HF/S3 transient I/O — auto-retried."""
 

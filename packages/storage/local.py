@@ -33,9 +33,7 @@ def _sign(secret: str, method: str, bucket: str, key: str, exp: int) -> str:
     return hmac.new(secret.encode(), msg, hashlib.sha256).hexdigest()
 
 
-def verify_signature(
-    secret: str, method: str, bucket: str, key: str, exp: int, sig: str
-) -> bool:
+def verify_signature(secret: str, method: str, bucket: str, key: str, exp: int, sig: str) -> bool:
     if exp < int(time.time()):
         return False
     expected = _sign(secret, method, bucket, key, exp)

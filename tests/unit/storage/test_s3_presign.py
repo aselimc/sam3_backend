@@ -16,9 +16,7 @@ def _make_backend() -> tuple[S3Backend, MagicMock]:
 
 def test_presign_put_passes_content_headers() -> None:
     backend, client = _make_backend()
-    p = backend.presign_put(
-        "uploads", "k", content_type="image/png", content_length=42, ttl_s=300
-    )
+    p = backend.presign_put("uploads", "k", content_type="image/png", content_length=42, ttl_s=300)
     assert p.url == "https://example/signed"
     assert p.headers == {"Content-Type": "image/png", "Content-Length": "42"}
     args = client.generate_presigned_url.call_args

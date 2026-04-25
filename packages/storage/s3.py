@@ -204,9 +204,7 @@ class S3Backend(StorageBackend):
             Key=key,
             UploadId=upload_id,
             MultipartUpload={
-                "Parts": [
-                    {"PartNumber": int(p["part_number"]), "ETag": p["etag"]} for p in parts
-                ]
+                "Parts": [{"PartNumber": int(p["part_number"]), "ETag": p["etag"]} for p in parts]
             },
         )
         return self.head_object(bucket, key)

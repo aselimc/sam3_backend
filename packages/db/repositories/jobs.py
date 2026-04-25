@@ -42,9 +42,7 @@ class JobsRepo:
         return (await self._s.execute(stmt)).scalar_one_or_none()
 
     async def get_by_idempotency_key(self, key: str) -> Job | None:
-        stmt = select(Job).where(
-            and_(Job.owner_id == self._owner, Job.idempotency_key == key)
-        )
+        stmt = select(Job).where(and_(Job.owner_id == self._owner, Job.idempotency_key == key))
         return (await self._s.execute(stmt)).scalar_one_or_none()
 
     async def list(
@@ -145,8 +143,7 @@ class JobsRepo:
         row = (await self._s.execute(stmt)).scalar_one_or_none()
         if row is None:
             raise TransitionConflict(
-                f"job {job_id} not in {[s.value for s in from_states]} "
-                f"(or celery_task_id mismatch)"
+                f"job {job_id} not in {[s.value for s in from_states]} (or celery_task_id mismatch)"
             )
         return row
 
