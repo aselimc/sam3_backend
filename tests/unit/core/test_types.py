@@ -1,4 +1,4 @@
-from packages.core.types import GpuClass, JobState, TERMINAL_STATES, TaskType
+from packages.core.types import TERMINAL_STATES, GpuClass, JobState, TaskType
 
 
 def test_task_type_values():

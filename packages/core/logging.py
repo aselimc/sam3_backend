@@ -16,10 +16,11 @@ from __future__ import annotations
 
 import json
 import sys
+from collections.abc import Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar
-from datetime import datetime, timezone
-from typing import Any, Iterator
+from datetime import UTC, datetime
+from typing import Any
 
 from loguru import logger
 
@@ -66,7 +67,7 @@ def bind(**fields: str | None) -> Iterator[None]:
 def _format(record: dict[str, Any]) -> str:
     settings = get_settings()
     out: dict[str, Any] = {
-        "ts": datetime.fromtimestamp(record["time"].timestamp(), tz=timezone.utc)
+        "ts": datetime.fromtimestamp(record["time"].timestamp(), tz=UTC)
         .isoformat(timespec="milliseconds")
         .replace("+00:00", "Z"),
         "level": record["level"].name,

@@ -35,7 +35,7 @@ def test_bind_resets_after_exit(monkeypatch):
         log.logger.info("middle")
     log.logger.info("after")
 
-    lines = [json.loads(l) for l in buf.getvalue().strip().splitlines()]
+    lines = [json.loads(line) for line in buf.getvalue().strip().splitlines()]
     assert lines[-3]["request_id"] == "inner"
     assert lines[-2]["request_id"] == "outer"
     assert "request_id" not in lines[-1]

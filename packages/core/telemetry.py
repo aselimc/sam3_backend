@@ -7,11 +7,11 @@ configure_tracing() wires up an OTLP exporter — Phase 6/7.
 
 from __future__ import annotations
 
-from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram
 from opentelemetry import trace
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.trace import Tracer
+from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram
 
 from .config import get_settings
 
