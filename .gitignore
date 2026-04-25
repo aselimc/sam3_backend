@@ -23,3 +23,11 @@ htmlcov/
 
 # Logs
 logs/
+
+# Build artifacts
+docs/_build/
+
+# Local data + caches
+.cache/
+*.sqlite
+*.sqlite-journal

@@ -1,0 +1,64 @@
+name: sam3
+
+x-defaults: &defaults
+  restart: unless-stopped
+  env_file:
+    - ../../.env
+
+services:
+  redis:
+    <<: *defaults
+    image: redis:7-alpine
+    profiles: [cpu, gpu1, gpu2]
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  postgres:
+    <<: *defaults
+    image: postgres:16-alpine
+    profiles: [cpu, gpu1, gpu2]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sam3}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sam3}
+      POSTGRES_DB: ${POSTGRES_DB:-sam3}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sam3} -d ${POSTGRES_DB:-sam3}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    <<: *defaults
+    image: minio/minio:latest
+    profiles: [cpu, gpu1, gpu2]
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_KEY:-minioadmin}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  redis_data:
+  pg_data:
+  minio_data:

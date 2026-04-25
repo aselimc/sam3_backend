@@ -37,6 +37,8 @@ torchaudio = { index = "pytorch-cu130" }
 sam3 = { path = "third_party/sam3", editable = true }
 
 [dependency-groups]
+api = []
+worker = []
 dev = [
     "ruff>=0.11.0",
     "pytest>=8.0",
@@ -62,6 +64,8 @@ select = ["E", "F", "I", "W", "UP"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+testpaths = ["tests"]
+norecursedirs = ["third_party", ".venv", "build", "dist", "node_modules"]
 
 [tool.coverage.run]
 source = ["app", "main"]
