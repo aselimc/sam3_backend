@@ -13,7 +13,7 @@ A step is not done until: code lands, tests pass, doc references updated.
 
 ---
 
-## Phase 0 — Scaffolding
+## Phase 0 — Scaffolding - Done
 
 | ID | Step | Files | Exit | Depends |
 |---|---|---|---|---|
@@ -28,7 +28,7 @@ A step is not done until: code lands, tests pass, doc references updated.
 
 ---
 
-## Phase 1 — Core kernel
+## Phase 1 — Core kernel - Done
 
 | ID | Step | Files | Exit | Depends |
 |---|---|---|---|---|
