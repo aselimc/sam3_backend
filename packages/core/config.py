@@ -76,6 +76,14 @@ class Settings(BaseSettings):
     metrics_port: int = 9100
     otel_endpoint: str | None = None  # OTLP collector; None = no exporter
 
+    # ── Broker tuning ───────────────────────────────────────────────────
+    celery_visibility_timeout: int = 3600  # seconds; longest expected job
+    celery_keyprefix: str = "sam3:"
+    celery_result_expires: int = 3600
+    celery_default_queue: str = "task.default"
+    rate_limit_burst: int = 60
+    rate_limit_refill_per_sec: float = 1.0
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:

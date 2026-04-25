@@ -44,7 +44,7 @@ A step is not done until: code lands, tests pass, doc references updated.
 
 ---
 
-## Phase 2 — Broker
+## Phase 2 — Broker - Done
 
 | ID | Step | Files | Exit | Depends |
 |---|---|---|---|---|
@@ -59,7 +59,7 @@ A step is not done until: code lands, tests pass, doc references updated.
 
 ---
 
-## Phase 3 — Storage + DB
+## Phase 3 — Storage + DB - Done
 
 | ID | Step | Files | Exit | Depends |
 |---|---|---|---|---|
