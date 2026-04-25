@@ -106,7 +106,7 @@ ENTRYPOINT ["uv","run","python","-m","services.api.main"]
 CUDA base; submodules baked in; model weights optionally baked at build.
 
 ```dockerfile
-FROM nvidia/cuda:12.6.1-cudnn-runtime-ubuntu22.04 AS base
+FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04 AS base
 RUN apt-get update && apt-get install -y python3.12 python3.12-venv git ca-certificates libgl1
 WORKDIR /app
 COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /usr/local/bin/uv

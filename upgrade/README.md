@@ -31,6 +31,7 @@ Read in order on the first pass; jump by topic afterwards.
 | 09 | [phases.md](./09-phases.md) | Phase-by-phase integration plan. Each phase has scope, exit criteria, rollback, and verification commands. |
 | 10 | [use-cases.md](./10-use-cases.md) | End-to-end user journeys and SDK-shaped code samples for each canonical flow (SAM3 + DA3 monocular + DA3 multi-view). |
 | 11 | [risks-and-decisions.md](./11-risks-and-decisions.md) | Risk register, ADR-style decision log, open items with owners. |
+| 12 | [implementation-steps.md](./12-implementation-steps.md) | Granular small-step companion to phases. ~118 steps, each with files, exit check, and dependencies. The daily TODO list. |
 
 ## Enterprise overlay (separate folder)
 
